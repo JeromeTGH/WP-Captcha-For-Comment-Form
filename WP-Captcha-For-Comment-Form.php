@@ -31,7 +31,7 @@ if (!function_exists('add_action')) {
 // ====================
 // Constantes du plugin
 // ====================
-define("NOMBRE_MINIMAL_POUR_SOUSTRACTION", 1);          // En clair : le captcha à trouver sera ce nombre, compris entre 1 et 9
+define("NOMBRE_MINIMAL_POUR_SOUSTRACTION", 3);          // En clair : le captcha à trouver sera ce nombre, compris entre 1 et 9
 define("NOMBRE_MAXIMAL_POUR_SOUSTRACTION", 9);          //            (il correspondra au nombre à soustraire à un autre, pour arriver au bon résultat) 
 
 define("NOMBRE_MINIMAL_POUR_TOTAL", 31);                // Il s'agit d'un nombre compris entre 31 et 79, résultant de la soustraction
@@ -47,20 +47,27 @@ add_filter('comment_form_logged_in_after', 'ajout_champs_captcha');        // et
 function ajout_champs_captcha($champs) {
     $nombreX = random_int(NOMBRE_MINIMAL_POUR_SOUSTRACTION, NOMBRE_MAXIMAL_POUR_SOUSTRACTION);      // Bornes basse et haute incluses
     $nombreY = random_int(NOMBRE_MINIMAL_POUR_TOTAL, NOMBRE_MAXIMAL_POUR_TOTAL);                    // Bornes basse et haute incluses
-    $nombreZ = $nombreY - $nombreX
+    $nombreZ = $nombreY - $nombreX;
+
+
+    //<label for="nombreY">Résolvez cette soustraction : </label>
+    // grid-column: 1;
+    //<p style="display: flex; justify-content: flex-start; align-items: center; white-space: nowrap; grid-column: unset;">
+
+    // style="width: auto;"
 
     $nouveauxChamps = '
-        <div class="display: flex; flex-flow: row wrap;">
-            <label for="nombreY">Résolvez cette soustraction : </label>
-            <input type="text" id="nombreY" name="nombreY" value="'.$nombreY.'" readonly>
+        <p>
+            
+            <label for="nombreY">Résolvez cette soustraction :</label>
+            <input type="hidden" id="nombreY" name="nombreY" value="'.$nombreY.'" readonly style="display: inline-block;">
 
-            <label for="nombreX"> - </label>
-            <input type="number" id="nombreX" name="nombreX" value="" required="required">
-            <span class="required">*</span>
+            <label for="nombreX">&nbsp;'.$nombreY.'&nbsp;-&nbsp;</label>
+            <input type="text" id="nombreX" name="nombreX" value="" size="3" required="required" style="width: auto;">
 
-            <label for="nombreZ"> = </label>
-            <input type="text" id="nombreZ" name="nombreZ" value="'.$nombreZ.'" readonly>
-        </div>';    // Nota : l'attribut 'required="required"' permet de faire une pré-validation AU MOMENT du submit, avant de passer à la page suivante
+            <label for="nombreZ">&nbsp;=&nbsp;'.$nombreZ.'</label>
+            <input type="hidden" id="nombreZ" name="nombreZ" value="'.$nombreZ.'" readonly>
+        </p>';    // Nota : l'attribut 'required="required"' permet de faire une pré-validation AU MOMENT du submit, avant de passer à la page suivante
 
     echo $nouveauxChamps;
     return $champs;
@@ -75,17 +82,27 @@ add_filter('preprocess_comment', 'verifier_presence_captcha_et_si_valeur_correct
 function verifier_presence_captcha_et_si_valeur_correcte($commentdata) {
 
     // Tout d'abord, on vérifie la présence des 3 champs attendus
-    if(!isset($_POST['nombreX']) || !isset($_POST['nombreY']) || !isset($_POST['nombreTTTTTZ']))
+    if(!isset($_POST['nombreX']) || !isset($_POST['nombreY']) || !isset($_POST['nombreZ']))
         wp_die(__("[Plugin WP-Captcha-For-Comment-Form] Erreur : tous les champs attendus n'ont pas été envoyés..."));
 
 
     // Ensuite, on récupère ces champs
+    $nombreX = sanitize_text_field($_POST['nombreX']);
+    $nombreY = sanitize_text_field($_POST['nombreY']);
+    $nombreZ = sanitize_text_field($_POST['nombreZ']);
+
+    // Puis on vérifie si ce sont bien des nombres
+    if(!is_numeric($nombreX) || !is_numeric($nombreY) || !is_numeric($nombreZ))
+        wp_die(__("[Plugin WP-Captcha-For-Comment-Form] Erreur : tous les champs attendus ne sont pas au format numérique..."));
 
 
     // Et enfin, on vérifie si l'opération est correcte
+    $nombreX = intval($nombreX);
+    $nombreY = intval($nombreY);
+    $nombreZ = intval($nombreZ);
 
-
-
+    if(($nombreY - $nombreX) != $nombreZ)
+        wp_die(__("Erreur : le captcha n'est pas correct. Revenez à la page précédente, s'il vous plait !"));
 
 
     return $commentdata;

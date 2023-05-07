@@ -49,14 +49,7 @@ function ajout_champs_captcha($champs) {
     $nombreY = random_int(NOMBRE_MINIMAL_POUR_TOTAL, NOMBRE_MAXIMAL_POUR_TOTAL);                    // Bornes basse et haute incluses
     $nombreZ = $nombreY - $nombreX;
 
-
-    //<label for="nombreY">Résolvez cette soustraction : </label>
-    // grid-column: 1;
-    //<p style="display: flex; justify-content: flex-start; align-items: center; white-space: nowrap; grid-column: unset;">
-
-    // style="width: auto;"
-
-    $nouveauxChamps = '
+    echo '
         <p>
             
             <label for="nombreY">Résolvez cette soustraction :</label>
@@ -69,7 +62,6 @@ function ajout_champs_captcha($champs) {
             <input type="hidden" id="nombreZ" name="nombreZ" value="'.$nombreZ.'" readonly>
         </p>';    // Nota : l'attribut 'required="required"' permet de faire une pré-validation AU MOMENT du submit, avant de passer à la page suivante
 
-    echo $nouveauxChamps;
     return $champs;
 }
 

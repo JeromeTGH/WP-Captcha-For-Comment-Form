@@ -92,7 +92,7 @@ function verifier_presence_captcha_et_si_valeur_correcte($commentdata) {
 
     // Tout d'abord, on vérifie la présence des 3 champs attendus
     if(!isset($_POST['nombreX']) || !isset($_POST['nombreY']) || !isset($_POST['nombreZ']))
-        wp_die(__("[Plugin WP-Captcha-For-Comment-Form]<br><br>Erreur : <strong>tous les champs attendus n'ont pas été envoyés...</strong>"));
+        wp_die(__("[Plugin WP-Captcha]<br><br>Erreur : <strong>tous les champs attendus n'ont pas été envoyés...</strong>"));
 
 
     // Ensuite, on récupère ces champs
@@ -102,7 +102,7 @@ function verifier_presence_captcha_et_si_valeur_correcte($commentdata) {
 
     // Puis on vérifie si ce sont bien des nombres
     if(!is_numeric($nombreX) || !is_numeric($nombreY) || !is_numeric($nombreZ))
-        wp_die(__("[Plugin WP-Captcha-For-Comment-Form]<br><br>Erreur : <strong>le captcha attendu n'est pas au format numérique, alors qu'il le faut...</strong><br><br><u>Revenez à la page précédente, pour le modifier !</u>"));
+        wp_die(__("[Plugin WP-Captcha]<br><br>Erreur : <strong>le captcha attendu n'est pas au format numérique, alors qu'il le faut...</strong><br><br><u>Revenez à la page précédente, pour le modifier !</u>"));
 
 
     // Et enfin, on vérifie si l'opération est correcte
@@ -111,7 +111,7 @@ function verifier_presence_captcha_et_si_valeur_correcte($commentdata) {
     $nombreZ = intval($nombreZ);
 
     if(($nombreY - $nombreX) != $nombreZ)
-        wp_die(__("[Plugin WP-Captcha-For-Comment-Form]<br><br>Erreur : <strong>le captcha n'est pas correct, désolé...</strong><br><br><u>Revenez à la page précédente, pour le modifier !</u>"));
+        wp_die(__("[Plugin WP-Captcha]<br><br>Erreur : <strong>le captcha n'est pas correct, désolé...</strong><br><br><u>Revenez à la page précédente, pour le modifier !</u>"));
 
 
     return $commentdata;

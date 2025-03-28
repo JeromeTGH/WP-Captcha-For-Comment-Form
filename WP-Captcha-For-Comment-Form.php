@@ -68,7 +68,7 @@ function ajout_champs_captcha($champs) {
     $nombreZ = $nombreY - $nombreX;
 
     echo '
-        <p>
+        <p style="text-align: left; width: 100%;">
             
             <label for="nombreY">Résolvez cette soustraction :</label>
             <input type="hidden" id="nombreY" name="nombreY" value="'.$nombreY.'" readonly style="display: inline-block;">

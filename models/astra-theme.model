@@ -69,16 +69,15 @@ function ajout_champs_captcha($champs) {
 
     echo '
         <p style="text-align: center; width: 100%;">
-            
-            <label for="nombreY">Résolvez cette soustraction :</label>
             <input type="hidden" id="nombreY" name="nombreY" value="'.$nombreY.'" readonly style="display: inline-block;">
- 
-            <label for="nombreX">&nbsp;'.$nombreY.'&nbsp;-&nbsp;</label>
-            <input type="text" id="nombreX" name="nombreX" value="" size="3" required="required" style="width: auto;">
- 
-            <label for="nombreZ">&nbsp;=&nbsp;'.$nombreZ.'</label>
             <input type="hidden" id="nombreZ" name="nombreZ" value="'.$nombreZ.'" readonly>
-
+            <span>Résolvez cette soustraction :</span>
+            <br>
+            <br>
+            <span>'.$nombreY.'&nbsp;-&nbsp;____&nbsp;=&nbsp;'.$nombreZ.'</span>
+            <br>
+            <br>
+            <input type="text" id="nombreX" name="nombreX" placeholder="Réponse ?" value="" size="4" required="required" style="width: auto;">
         </p>';    // Nota : l'attribut 'required="required"' permet de faire une pré-validation AU MOMENT du submit, avant de passer à la page suivante
 
     return $champs;
